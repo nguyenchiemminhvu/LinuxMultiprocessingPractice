@@ -4,19 +4,30 @@
 #include <iostream>
 using namespace std;
 
+void execute_child_process()
+{
+    char buffer[255] = { 0 };
+    sprintf(buffer, "PID of child process %d\n", getpid());
+    write(1, buffer, strlen(buffer));
+}
+
+void execute_parent_process()
+{
+    char buffer[255] = { 0 };
+    sprintf(buffer, "PID of parent process %d\n", getpid());
+    write(1, buffer, strlen(buffer));
+} 
+
 int main()
 {
-    char buffer[255] = {0};
-
-    int cid = getpid();
-    std::cout << cid << std::endl;
-
-    int fid = fork();
-
-    for (int i = 0; i < 10; i++)
+    pid_t pid = fork();
+    if (pid == 0)
     {
-        sprintf(buffer, "%d\n", getpid());
-        write(1, buffer, strlen(buffer));
+        execute_child_process();
+    }
+    else
+    {
+        execute_parent_process();
     }
 
     return 0;
