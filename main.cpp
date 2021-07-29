@@ -2,13 +2,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <signal.h>
 #include <iostream>
 using namespace std;
 
+#define VER 2
+
+#if VER == 1
 void func_in_child_process_1()
 {
     pid_t p = fork();
-    
+
     char buffer[255] = { 0 };
     sprintf(buffer, "func_in_child_process_1 called\n");
     write(1, buffer, strlen(buffer));
@@ -37,10 +41,12 @@ void execute_parent_process()
     char buffer[255] = { 0 };
     sprintf(buffer, "PID of parent process %d\n", getpid());
     write(1, buffer, strlen(buffer));
-} 
+}
+#endif // VER == 1
 
 int main()
 {
+#if VER == 1
     pid_t pid = fork();
     if (pid == 0)
     {
@@ -57,6 +63,9 @@ int main()
         wait(&status);
         execute_parent_process();
     }
+#endif // VER == 1
+
+
 
     return 0;
 }
