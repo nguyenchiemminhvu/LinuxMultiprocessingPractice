@@ -1,14 +1,19 @@
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <iostream>
 using namespace std;
 
 void execute_child_process()
 {
+    sleep(1);
+
     char buffer[255] = { 0 };
     sprintf(buffer, "PID of child process %d\n", getpid());
     write(1, buffer, strlen(buffer));
+    
+    sleep(1);
 }
 
 void execute_parent_process()
@@ -27,6 +32,8 @@ int main()
     }
     else
     {
+        int status;
+        wait(&status);
         execute_parent_process();
     }
 
