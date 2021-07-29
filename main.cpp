@@ -5,6 +5,22 @@
 #include <iostream>
 using namespace std;
 
+void func_in_child_process_1()
+{
+    pid_t p = fork();
+    
+    char buffer[255] = { 0 };
+    sprintf(buffer, "func_in_child_process_1 called\n");
+    write(1, buffer, strlen(buffer));
+}
+
+void func_in_child_process_2()
+{
+    char buffer[255] = { 0 };
+    sprintf(buffer, "func_in_child_process_2 called\n");
+    write(1, buffer, strlen(buffer));
+}
+
 void execute_child_process()
 {
     sleep(1);
@@ -29,6 +45,11 @@ int main()
     if (pid == 0)
     {
         execute_child_process();
+
+        std::cout << "In child process, do something more..." << std::endl;
+        
+        func_in_child_process_1();
+        func_in_child_process_2();
     }
     else
     {
